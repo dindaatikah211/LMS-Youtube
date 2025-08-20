@@ -7,9 +7,21 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;600;800&display=swap" rel="stylesheet">
     <style>
-      page {
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      @page {
         size: A4;
-        margin:0;
+        margin: 0;
+        padding: 0;
+      }
+      @media print {
+        body {
+          -webkit-print-color-adjust: exact;
+          print-color-adjust: exact;
+        }
       }
       body {
         font-family: 'Inter', sans-serif;
@@ -17,6 +29,8 @@
         color: white;
         margin: 0;
         padding: 0;
+        width: 100%;
+        height: 100vh;
       }
       .title {
         font-size: 3rem;
@@ -27,11 +41,22 @@
         color: #00ffd1;
         font-weight: 600;
       }
+      .certificate-container {
+          width: 100%;
+          height: 100vh;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background-color: #000000;
+          padding: 2rem;
+          margin: 0;
+      }
       .content-box {
         border: 2px solid #00ffd1;
         padding: 2rem;
         width: 100%;
         height: 100%;
+        max-width: 800px;
         background-color: #111;
       }
     </style>
@@ -41,12 +66,12 @@
       <h1 class="title mb-6">Certificate of Completion</h1>
 
       <p class="text-lg mb-2">This certificate is awarded to</p>
-      <h2 class="text-3xl font-semibold mb-4">coba@gmail.com</h2>
+      <h2 class="text-3xl font-semibold mb-4">rmind137@gmail.com</h2>
 
       <p class="text-lg mb-2">For succesfully completing the course</p>
       <h3 class="text-2xl highlight mb-6">CRM System </h3>
 
-      <p class="text-sm text-gray-300 mb-8">Issued on August 19, 2025</p>
+      <p class="text-sm text-gray-300 mb-8">Issued on August 20, 2025</p>
 
       <div class="mt-10 border-t border-dashed border-gray-500 pt-4 text-sm">
         <p>All About Payload</p>

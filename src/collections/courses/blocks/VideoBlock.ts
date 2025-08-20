@@ -21,7 +21,7 @@ export const VideoBlock: Block = {
     },
     {
       name: 'playerUrl',
-      label: 'Bunny Player URL',
+      label: 'Video URL From Gdrive',
       type: 'text',
       required: true,
     },
