@@ -1,5 +1,8 @@
+"use client"
+
 import { Course, Participation } from '@/payload-types'
 import Link from 'next/link'
+import { useParams } from 'next/navigation'
 import { HiPlay } from 'react-icons/hi'
 
 export default function ResumeButton({ participation }: { participation: Participation }) {
@@ -8,10 +11,12 @@ export default function ResumeButton({ participation }: { participation: Partici
   let progress = participation.progress ?? 0
   progress = progress + 1
   const progressPercentage = Math.round((progress / courseLength) * 100)
+  const params = useParams();
+  const tenant = params.tenant;
 
   return (
     <Link
-      href={`/dashboard/participation/${participation.id}`}
+      href={`/dashboard/${tenant}/participation/${participation.id}`}
       className="relative w-full bg-teal-500 hover:bg-teal-600 text-white font-bold rounded overflow-hidden transition ease-in-out duration-300"
     >
       <div className="flex flex-row items-center justify-between pl-2">

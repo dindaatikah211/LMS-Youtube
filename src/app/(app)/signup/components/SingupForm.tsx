@@ -74,13 +74,12 @@ export default function SignupForm(): ReactElement {
           </div>
 
           {error && <div className="text-red-500">{error}</div>}
-
-          <SubmitButton loading={isPending} text="Sign Up" />
+          <SubmitButton loading={isPending} text="Sign Up" loadingText="Sign Up..." />
         </form>
 
         <p className="mt-4 text-center text-sm text-gray-400">
           Already have an account?{' '}
-          <Link href="/login" className="font-semibold text-gray-300 hover:text-gray-200">
+          <Link href="/login" className="font-semibold text-teal-700 hover:text-teal-600">
             Login
           </Link>
         </p>

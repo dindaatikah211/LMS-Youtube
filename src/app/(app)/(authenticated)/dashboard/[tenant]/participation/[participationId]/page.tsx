@@ -1,6 +1,6 @@
 import { getPayload } from 'payload'
 import configPromise from '@payload-config'
-import { getUser } from '../../../actions/getUser'
+import { getUser } from '../../../../actions/getUser'
 import { Participation } from '@/payload-types'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
@@ -10,10 +10,10 @@ import CourseViewer from './components/CourseViewer'
 export default async function ParticipationPage({
   params,
 }: {
-  params: { participationId: string }
+  params: { tenant: string, participationId: string }
 }) {
   const payload = await getPayload({ config: configPromise })
-  const { participationId } = await params
+  const { tenant, participationId } = await params
   const user = await getUser()
 
   let participation: Participation | null = null
@@ -37,13 +37,13 @@ export default async function ParticipationPage({
   }
 
   return (
-    <div className="flex flex-col mx-auto w-full max-w-4xl p-4 gap-4">
+    <div className="flex flex-col mx-auto w-full max-w-6xl p-6 gap-6 pt-20">
       <Link
-        href="/dashboard"
+        href={`/dashboard/${tenant}`}
         className="inline-flex items-center gap-2 text-sm text-gray-300 hover:text-white transition duration-300 ease-in-out"
       >
         <HiArrowLeft className="text-lg" />
-        Back to Dashboard{' '}
+        Back{' '}
       </Link>
 
       <CourseViewer participation={participation} />

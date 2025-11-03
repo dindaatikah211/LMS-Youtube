@@ -1,103 +1,93 @@
 'use server'
-import { headers as getHeaders } from 'next/headers.js'
-import { getPayload } from 'payload'
-import React, { Suspense } from 'react'
-import configPromise from '@payload-config'
-import { Course } from '@/payload-types'
-import Link from 'next/link'
-import { getUser } from '../actions/getUser'
-import Image from 'next/image'
-import { Participation } from '@/payload-types'
-import ResumeButton from './course/[courseId]/components/ResumeButton'
 
-const page = async () => {
+import { getPayload } from 'payload'
+import configPromise from '@payload-config'
+import { getUser } from '../actions/getUser'
+import JoinTenantButton from '../components/joinTenantButton'
+
+const Page = async () => {
   const payload = await getPayload({ config: configPromise })
 
-  // get the user
+  // Get the user
   const user = await getUser()
 
-  // get courses
-  let courses: Course[] = []
-
-  try {
-    let coursesRes = await payload.find({
-      collection: 'courses',
-      limit: 10,
-      overrideAccess: false,
-      user: user,
-    })
-    courses = coursesRes.docs
-  } catch (e) {
-    console.log(e)
+  if (!user) {
+    return <div>Please login</div>
   }
 
-  let participations: Participation[] | null = []
+  // Get tenants
+  const tenants = await payload.find({
+    collection: 'tenants',
+    depth: 2,
+    overrideAccess: true,
+  })
 
-  try {
-    let participationRes = await payload.find({
-      collection: 'participation',
-      where: {
-        customer: {
-          equals: user?.id,
-        },
-      },
-      overrideAccess: false,
-      user: user,
-    })
-
-    participations = participationRes.docs
-  } catch (e) {
-    console.log(e)
-  }
+  // Check membership for each tenant
+  const existingTenants = user.tenants || []
 
   return (
-    <div className="flex flex-col mx-auto w-full max-w-4xl p-4 gap-4">
-      <div className="text-xl">
-        Welcome <span className="text-gray-400">{user?.email}</span>
-      </div>
-      {participations && participations.length > 0 && (
-        <div className="text-sm text-teal-400">Your Courses</div>
-      )}
-      <div className="grid grid-cols-3 gap-4">
-        <Suspense fallback={<div>Loading...</div>}>
-          {participations.map((participation) => {
-            return (
-              <ResumeButton key={participation.id} participation={participation}></ResumeButton>
-            )
-          })}
-        </Suspense>
+    <div className="flex flex-col mx-auto w-full max-w-6xl p-6 gap-6 pt-20">
+      <div className="flex items-center justify-between">
+        <div>
+          <p className="text-gray-400 mt-1">
+            Welcome back, <span className="text-teal-400">{user?.email}</span>
+          </p>
+        </div>
       </div>
 
-      <div className="text-sm text-teal-400">All Courses</div>
-      <div className="grid grid-cols-2 gap-4">
-        <Suspense fallback={<div>Loading...</div>}>
-          {courses.map((course) => {
-            const imageUrl =
-              typeof course.image === 'string' ? course.image : course.image?.url || ''
+      <div className="border-t border-gray-800"></div>
+
+      <div>
+        <h2 className="text-lg font-semibold text-teal-400 mb-4">Available Tenants</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {tenants?.docs.map((tenant: any) => {
+            // Check if user is member of this tenant
+            const isMember = existingTenants.some((t: any) => {
+              const tId = typeof t.tenant === 'string' ? t.tenant : t.tenant?.id
+              return tId === tenant.id
+            })
 
             return (
-              <Link
-                href={`/dashboard/course/${course.id}`}
-                key={course.id}
-                className="flex flex-col cursor-pointer relative border border-gray-700 hover:border-white transition ease-in-out duration-100 overflow-hidden"
+              <div
+                key={tenant.id}
+                className="relative bg-gray-950 border border-gray-700 rounded-xl p-6 flex flex-col gap-4 hover:border-teal-500 hover:shadow-lg hover:shadow-teal-500/10 transition-all duration-300"
               >
-                <div className="relative w-full aspect-video">
-                  {imageUrl && (
-                    <Image
-                      alt={`${course.title} thumbnail`}
-                      src={imageUrl}
-                      fill={true}
-                      className="object-cover"
-                    />
-                  )}
+                {isMember && (
+                  <div className="absolute top-3 right-3">
+                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-teal-900 text-teal-200 border border-teal-700">
+                      Member
+                    </span>
+                  </div>
+                )}
+
+                <div className="flex-1">
+                  <h3 className="text-xl font-bold text-white mb-2">{tenant.name}</h3>
+                  <p className="text-sm text-gray-400">
+                    {tenant.description || 'Explore courses and start learning'}
+                  </p>
                 </div>
-              </Link>
+
+                <div className="flex justify-center pt-2">
+                  <JoinTenantButton
+                    tenantId={tenant.id}
+                    tenantSlug={tenant.slug}
+                    isMember={isMember}
+                    tenantName={tenant.name}
+                  />
+                </div>
+              </div>
             )
           })}
-        </Suspense>
+        </div>
+
+        {tenants?.docs.length === 0 && (
+          <div className="text-center py-12 text-gray-500">
+            <p>No tenants available yet</p>
+          </div>
+        )}
       </div>
     </div>
   )
 }
 
-export default page
+export default Page

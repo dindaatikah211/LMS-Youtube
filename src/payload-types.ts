@@ -73,6 +73,7 @@ export interface Config {
     customers: Customer;
     courses: Course;
     participation: Participation;
+    tenants: Tenant;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
@@ -84,6 +85,7 @@ export interface Config {
     customers: CustomersSelect<false> | CustomersSelect<true>;
     courses: CoursesSelect<false> | CoursesSelect<true>;
     participation: ParticipationSelect<false> | ParticipationSelect<true>;
+    tenants: TenantsSelect<false> | TenantsSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
@@ -148,6 +150,15 @@ export interface CustomerAuthOperations {
  */
 export interface User {
   id: string;
+  roles?: ('superadmin' | 'tenantadmin' | 'tenantviewer')[] | null;
+  username?: string | null;
+  tenants?:
+    | {
+        tenant: string | Tenant;
+        roles: ('tenantadmin' | 'tenantviewer')[];
+        id?: string | null;
+      }[]
+    | null;
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -168,11 +179,42 @@ export interface User {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "tenants".
+ */
+export interface Tenant {
+  id: string;
+  name: string;
+  /**
+   * Used for domain-based tenant handling
+   */
+  domain?: string | null;
+  /**
+   * Primary owner/admin of this tenant
+   */
+  owner?: (string | null) | User;
+  /**
+   * Used for url paths, example: /tenant-slug/page-slug
+   */
+  slug: string;
+  /**
+   * If checked, logging in is not required to read. Useful for building public pages.
+   */
+  allowPublicRead?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "media".
  */
 export interface Media {
   id: string;
+  tenant?: (string | null) | Tenant;
   alt: string;
+  /**
+   * Tenant(s) that own this media
+   */
+  tenants: (string | Tenant)[];
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -191,6 +233,13 @@ export interface Media {
  */
 export interface Customer {
   id: string;
+  tenants?:
+    | {
+        tenant: string | Tenant;
+        roles: 'customer'[];
+        id?: string | null;
+      }[]
+    | null;
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -215,8 +264,13 @@ export interface Customer {
  */
 export interface Course {
   id: string;
+  tenant?: (string | null) | Tenant;
   title: string;
   description: string;
+  /**
+   * Tenant(s) that own this course
+   */
+  tenants: (string | Tenant)[];
   image: string | Media;
   curriculum?:
     | (
@@ -263,9 +317,11 @@ export interface Course {
  */
 export interface Participation {
   id: string;
+  tenant?: (string | null) | Tenant;
   customer: string | Customer;
   course: string | Course;
-  progress: number;
+  tenants: (string | Tenant)[];
+  progress?: number | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -295,6 +351,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'participation';
         value: string | Participation;
+      } | null)
+    | ({
+        relationTo: 'tenants';
+        value: string | Tenant;
       } | null);
   globalSlug?: string | null;
   user:
@@ -353,6 +413,15 @@ export interface PayloadMigration {
  * via the `definition` "users_select".
  */
 export interface UsersSelect<T extends boolean = true> {
+  roles?: T;
+  username?: T;
+  tenants?:
+    | T
+    | {
+        tenant?: T;
+        roles?: T;
+        id?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
   email?: T;
@@ -375,7 +444,9 @@ export interface UsersSelect<T extends boolean = true> {
  * via the `definition` "media_select".
  */
 export interface MediaSelect<T extends boolean = true> {
+  tenant?: T;
   alt?: T;
+  tenants?: T;
   updatedAt?: T;
   createdAt?: T;
   url?: T;
@@ -393,6 +464,13 @@ export interface MediaSelect<T extends boolean = true> {
  * via the `definition` "customers_select".
  */
 export interface CustomersSelect<T extends boolean = true> {
+  tenants?:
+    | T
+    | {
+        tenant?: T;
+        roles?: T;
+        id?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
   email?: T;
@@ -415,8 +493,10 @@ export interface CustomersSelect<T extends boolean = true> {
  * via the `definition` "courses_select".
  */
 export interface CoursesSelect<T extends boolean = true> {
+  tenant?: T;
   title?: T;
   description?: T;
+  tenants?: T;
   image?: T;
   curriculum?:
     | T
@@ -466,9 +546,24 @@ export interface CoursesSelect<T extends boolean = true> {
  * via the `definition` "participation_select".
  */
 export interface ParticipationSelect<T extends boolean = true> {
+  tenant?: T;
   customer?: T;
   course?: T;
+  tenants?: T;
   progress?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "tenants_select".
+ */
+export interface TenantsSelect<T extends boolean = true> {
+  name?: T;
+  domain?: T;
+  owner?: T;
+  slug?: T;
+  allowPublicRead?: T;
   updatedAt?: T;
   createdAt?: T;
 }

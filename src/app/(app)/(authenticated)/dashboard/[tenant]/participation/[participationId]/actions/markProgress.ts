@@ -25,7 +25,7 @@ export async function markProgress(participation: Participation) {
       data: {
         progress: nextProgress,
       },
-      overrideAccess: false,
+      overrideAccess: true,
       user: user,
     })
 

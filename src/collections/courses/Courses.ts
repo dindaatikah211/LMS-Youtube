@@ -1,26 +1,21 @@
-import { CollectionConfig } from 'payload'
+import type { CollectionConfig } from 'payload'
 import { VideoBlock } from './blocks/VideoBlock'
 import { QuizBlock } from './blocks/QuizBlock'
 import { FinishBlock } from './blocks/FinishBlock'
+import { isSuperAdminAccess } from '@/access/isSuperAdmin'
+import { updateAndDeleteAccess } from './access/updateAndDelete'
 
 export const Courses: CollectionConfig = {
   slug: 'courses',
   access: {
-    read: ({ req: { user } }) => {
-      return Boolean(user)
-    },
-    create: ({ req: { user } }) => {
-      return user?.collection === 'users'
-    },
-    update: ({ req: { user } }) => {
-      return user?.collection === 'users'
-    },
-    delete: ({ req: { user } }) => {
-      return user?.collection === 'users'
-    },
+    create: ({ req }) => Boolean(req.user),
+    delete: updateAndDeleteAccess,
+    read: () => true, // semua bisa baca course
+    update: updateAndDeleteAccess,
   },
   admin: {
     useAsTitle: 'title',
+    group: 'Tenant Collections',
   },
   fields: [
     {
@@ -34,6 +29,18 @@ export const Courses: CollectionConfig = {
       label: 'Description',
       type: 'textarea',
       required: true,
+    },
+    {
+      name: 'tenants',
+      type: 'relationship',
+      relationTo: 'tenants',
+      hasMany: true,
+      required: true,
+      admin: {
+        description: 'Tenant(s) that own this course',
+        position: 'sidebar',
+      },
+      defaultValue: undefined,
     },
     {
       name: 'image',

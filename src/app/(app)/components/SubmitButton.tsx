@@ -1,23 +1,51 @@
 import { ReactElement } from 'react'
-import { AiOutlineLoading3Quarters } from 'react-icons/ai'
 
 export default function SubmitButton({
   loading,
   text,
+  loadingText = 'Processing...',
 }: {
   loading: boolean
   text: string
+  loadingText?: string
 }): ReactElement {
   return (
     <button
       type="submit"
-      className="bg-white relative text-black rounded-md p-2 w-full"
       disabled={loading}
+      className={`relative w-full p-2 rounded-md transition text-white font-medium ${
+        loading
+          ? 'bg-teal-700 opacity-80 cursor-not-allowed'
+          : 'bg-teal-600 hover:bg-teal-700'
+      }`}
     >
-      {text}{' '}
-      <div className="h-full absolute top-0 left-0 flex items-center justify-center">
-        <AiOutlineLoading3Quarters className={`animate-spin ${loading ? '' : 'hidden'}`} />
-      </div>
+      {loading ? (
+        <span className="flex items-center justify-center gap-2">
+          <svg
+            className="animate-spin h-4 w-4 text-white"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <circle
+              className="opacity-25"
+              cx="12"
+              cy="12"
+              r="10"
+              stroke="currentColor"
+              strokeWidth="4"
+            ></circle>
+            <path
+              className="opacity-75"
+              fill="currentColor"
+              d="M4 12a8 8 0 018-8v8H4z"
+            ></path>
+          </svg>
+          {loadingText}
+        </span>
+      ) : (
+        text
+      )}
     </button>
   )
 }
