@@ -10,7 +10,7 @@ import { Participation } from '@/payload-types'
 import ResumeButton from './course/[courseId]/components/ResumeButton'
 import { redirect } from 'next/navigation'
 
-const page = async ({ params }: { params: { tenant: string } }) => {
+  const page = async ({ params }: { params: { tenant: string } }) => {
   const payload = await getPayload({ config: configPromise })
   const user = await getUser()
 
