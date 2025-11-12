@@ -33,7 +33,7 @@ export async function markProgress(participation: Participation) {
       throw new Error('Failed to update participation')
     }
 
-    console.log('Update successful:', updateRes)
+    console.log('Update successfull:', updateRes)
     return updateRes
   } catch (err) {
     console.error('Error updating participation progress:', err)
