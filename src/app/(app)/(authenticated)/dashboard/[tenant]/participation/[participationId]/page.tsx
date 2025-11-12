@@ -37,7 +37,7 @@ export default async function ParticipationPage({
   }
 
   return (
-    <div className="flex flex-col mx-auto w-full max-w-6xl p-7 gap-7 pt-20">
+    <div className="flex flex-col mx-auto w-full max-w-6xl p-6 gap-6 pt-20">
       <Link
         href={`/dashboard/${tenant}`}
         className="inline-flex items-center gap-2 text-sm text-gray-300 hover:text-white transition duration-300 ease-in-out"
