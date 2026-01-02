@@ -10,7 +10,7 @@ import CourseViewer from './components/CourseViewer'
 export default async function ParticipationPage({
   params,
 }: {
-  params: { tenant: string, participationId: string }
+  params: Promise<{ tenant: string, participationId: string }>
 }) {
   const payload = await getPayload({ config: configPromise })
   const { tenant, participationId } = await params

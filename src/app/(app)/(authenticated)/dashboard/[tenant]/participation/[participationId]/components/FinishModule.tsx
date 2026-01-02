@@ -9,8 +9,8 @@ export default function FinishModule({ participation }: { participation: Partici
   async function handleDownload() {
     setLoading(true)
     try {
-      let course: Course = participation.course as Course
-      let response = await axios.get(`/printCertificate/${participation.id}`, {
+      const course: Course = participation.course as Course
+      const response = await axios.get(`/printCertificate/${participation.id}`, {
         responseType: 'blob',
       })
 

@@ -10,7 +10,7 @@ import { Participation } from '@/payload-types'
 import ResumeButton from './course/[courseId]/components/ResumeButton'
 import { redirect } from 'next/navigation'
 
-  const page = async ({ params }: { params: { tenant: string } }) => {
+  const page = async ({ params }: { params: Promise<{ tenant: string }> }) => {
   const payload = await getPayload({ config: configPromise })
   const user = await getUser()
 
@@ -38,7 +38,7 @@ import { redirect } from 'next/navigation'
   // Get courses
   let courses: Course[] = []
   try {
-    let coursesRes = await payload.find({
+    const coursesRes = await payload.find({
       collection: 'courses',
       limit: 10,
       overrideAccess: false,
@@ -55,7 +55,7 @@ import { redirect } from 'next/navigation'
   // Get participations
   let participations: Participation[] = []
   try {
-    let participationRes = await payload.find({
+    const participationRes = await payload.find({
       collection: 'participation',
       where: {
         customer: {
@@ -84,7 +84,7 @@ import { redirect } from 'next/navigation'
     <div className="flex flex-col mx-auto w-full max-w-6xl p-6 gap-6 pt-20">
       <div className="flex items-center justify-between">
         <div>
-          <p className="text-gray-400 mt-1">
+          <p className="text-gray-500 mt-1">
             Welcome back, <span className="text-teal-400">{user?.email}</span>
           </p>
         </div>

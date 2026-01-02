@@ -39,7 +39,7 @@ export async function signup({ email, password }: SignupParams): Promise<SignupR
       },
     })
     if (result.token) {
-      let cookieStore = await cookies()
+      const cookieStore = await cookies()
       cookieStore.set({
         name: 'payload-token',
         value: result.token,

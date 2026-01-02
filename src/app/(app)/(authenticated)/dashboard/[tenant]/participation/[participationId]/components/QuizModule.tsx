@@ -53,10 +53,10 @@ export default function QuizModule({ module, participation, onCompleted }: QuizM
 
   function checkAnswer(answerIndex: number) {
     let correct = true
-    let length = module.questions[answerIndex].answers.length
+    const length = module.questions[answerIndex].answers.length
 
     for (let n = 0; n < length; n++) {
-      let val = module.questions[answerIndex].answers[n].true ? true : false
+      const val = module.questions[answerIndex].answers[n].true ? true : false
       if (val !== userAnswers[answerIndex][n]) {
         correct = false
         break
@@ -101,7 +101,7 @@ export default function QuizModule({ module, participation, onCompleted }: QuizM
                       type="checkbox"
                       onClick={(e) => {
                         setMessage('')
-                        let tempAns = JSON.parse(JSON.stringify(userAnswers))
+                        const tempAns = JSON.parse(JSON.stringify(userAnswers))
                         tempAns[index][answerIndex] = e.currentTarget.checked
                         setUserAnswers(tempAns)
                       }}

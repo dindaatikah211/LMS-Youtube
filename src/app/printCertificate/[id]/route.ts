@@ -7,7 +7,7 @@ import axios, { AxiosError } from 'axios'
 import { getUser } from '@/app/(app)/(authenticated)/actions/getUser'
 import fs from 'fs'
 
-export const GET = async (req: NextRequest, { params }: { params: { id: string } }) => {
+export const GET = async (req: NextRequest, { params }: { params: Promise<{ id: string }> }) => {
   try {
     const payload = await getPayload({ config: configPromise })
     const user = await getUser()

@@ -9,7 +9,7 @@ import Image from 'next/image'
 import StartCourseButton from './components/StartCourseButton'
 import ResumeButton from './components/ResumeButton'
 
-const CoursePage = async ({ params }: { params: { tenant: string; courseId: string } }) => {
+const CoursePage = async ({ params }: { params: Promise<{ tenant: string; courseId: string }> }) => {
   const { tenant, courseId } = await params
   const payload = await getPayload({ config: configPromise })
   const user = await getUser()

@@ -47,7 +47,7 @@ export default function LoginForm(): ReactElement {
           <SubmitButton loading={isPending} text="Login" loadingText="Login..." />
         </form>
         <p className="mt-10 text-center text-sm text-gray-400">
-          Don't have an account?{' '}
+          Don&apos;t have an account?{' '}
           <a href="/signup" className="font-semibold text-teal-700 hover:text-teal-600">
             Sign up
           </a>
