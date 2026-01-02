@@ -1,4 +1,4 @@
-import Link from 'next/Link'
+import Link from 'next/link'
 import { HiArrowLeft } from 'react-icons/hi'
 
 export default function NotFound() {
