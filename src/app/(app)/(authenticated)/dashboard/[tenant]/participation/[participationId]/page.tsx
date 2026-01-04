@@ -4,7 +4,7 @@ import { getUser } from '../../../../actions/getUser'
 import { Participation } from '@/payload-types'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
-import { HiArrowLeft } from 'react-icons/hi'
+import { HiArrowLeft } from 'react-icons/hi2'
 import CourseViewer from './components/CourseViewer'
 
 export default async function ParticipationPage({

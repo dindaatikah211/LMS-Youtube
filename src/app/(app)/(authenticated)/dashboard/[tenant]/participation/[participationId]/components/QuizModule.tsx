@@ -2,7 +2,7 @@ import { Participation } from '@/payload-types'
 import { useEffect, useState } from 'react'
 import NextButton from './NextButton'
 import { markProgress } from '../actions/markProgress'
-import { HiDocumentSearch } from 'react-icons/hi'
+import { HiDocument } from 'react-icons/hi2'
 
 interface QuizModuleProps {
   module: any
@@ -134,7 +134,7 @@ export default function QuizModule({ module, participation, onCompleted }: QuizM
               className="inline-flex gap-2 items-center border border-white px-4 py-2"
             >
               Check Answers
-              <HiDocumentSearch className="h-4 w-4" />
+              <HiDocument className="h-4 w-4" />
             </button>
           </div>
         )}

@@ -5,7 +5,7 @@
   "license": "MIT",
   "type": "module",
   "scripts": {
-    "build": "cross-env NODE_OPTIONS=\"--no-deprecation --max-old-space-size=8000\" next build --webpack",
+    "build": "cross-env NODE_OPTIONS=\"--no-deprecation --max-old-space-size=8000\" next build",
     "dev": "cross-env NODE_OPTIONS=--no-deprecation next dev",
     "devsafe": "rm -rf .next && cross-env NODE_OPTIONS=--no-deprecation next dev",
     "generate:importmap": "cross-env NODE_OPTIONS=--no-deprecation payload generate:importmap",
@@ -33,7 +33,7 @@
     "dotenv": "16.4.7",
     "ejs": "^3.1.10",
     "graphql": "^16.11.0",
-    "next": "16.1.1",
+    "next": "15.4.4",
     "nodemailer": "^7.0.5",
     "payload": "3.49.1",
     "react": "^19.2.3",

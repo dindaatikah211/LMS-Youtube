@@ -4,7 +4,7 @@ import { getUser } from '../../../../actions/getUser'
 import { Course, Participation } from '@/payload-types'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
-import { HiArrowLeft, HiPencilAlt, HiVideoCamera } from 'react-icons/hi'
+import { HiArrowLeft, HiPencil, HiVideoCamera } from 'react-icons/hi2'
 import Image from 'next/image'
 import StartCourseButton from './components/StartCourseButton'
 import ResumeButton from './components/ResumeButton'
@@ -131,7 +131,7 @@ const CoursePage = async ({ params }: { params: Promise<{ tenant: string; course
                     className="p-4 rounded-lg bg-gray-900 border border-gray-800 hover:border-yellow-500/50 hover:shadow-md hover:shadow-yellow-400/10 transition-all duration-300"
                   >
                     <div className="flex items-center gap-2 text-yellow-400 font-medium">
-                      <HiPencilAlt className="text-lg" />
+                      <HiPencil className="text-lg" />
                       {block.title}
                     </div>
                     <p className="text-xs text-gray-500 mt-1">
